@@ -14,17 +14,23 @@ While there are many approaches to solving this problem we will turn our focus t
 Back in [2015](https://arxiv.org/abs/1505.05770) when the world was young and Chat-GPT had not yet said its first words, a solution to sampling from complicated high-dimensional arose:
 	*We can sample data from a multi-dimensional Gaussian and transform that Gaussian such that the resulting distribution matches some desired distribution.*
 How do we do this? By using a simple change in variables! Say we sample $z \sim \mathcal{N}$, and from $z$ generate a random variable $x$ by applying some **invertible** function $\phi$ as $x= \phi(z)$. How should $p_x$ look like? We know that for every $V \subset \mathbb{R}^d$ the following must hold
+
 $$\mathbb{P}[x \in V] = \int_V p_x(x) dx = \int_{\phi^{-1}(z)} p_x(\phi(z))\mathrm{det}|\frac{d \phi}{dz}| = \int_Z p_z(z)dz \implies p_x(x) = p_z(z) \mathrm{det}|\frac{d \phi^{-1}}{dx}|$$
+
 The issue now becomes that we do not know what $\phi$ should look like, so why don't we learn it? This is exactly what we will do, however we need to make sure that $\phi_\theta$ (note that $\phi$ is assigned some learnable parameters $\theta$) stays invertible. As any mathematician worth their salt know that a composition of invertible functions is also invertible so if we decide on making $\phi_\theta$ a neural network we only need to ensure that each layer is invertible! See more on how to do that [here](https://arxiv.org/pdf/1908.09257) , but the curx is that our model has the following form:
+
 $$ \phi_{\theta} = f_k \circ f_{k-1}\circ ... \circ f_{2} \circ f_{1}$$
+
 Where $f_i$ is the $i$-th layer of a neural network.
 
 It turns out this gives as plenty of nice properties:
 1. The loss function is a simple *negative log-likelyhood*
+
 $$ \mathcal{l}_{\theta,i} =  p_{x_i} \log p_{x_i}  =  \log p_z(z_i) + \sum_k  \log |\frac{\partial f_k^{-1}}{\partial f_{k-1}}|(z_i)$$
-	Where $f_0 = z$. 
-2. We can use the network to sample $x$ by first sampling $z$ and passing it through the network.
-3. We can infer the likelihood of $x$ by calculating the inverse of each layer and getting z. According to property 1. calculating the log-likelihood is straightforward.
+
+Where $f_0 = z$. 
+3. We can use the network to sample $x$ by first sampling $z$ and passing it through the network.
+4. We can infer the likelihood of $x$ by calculating the inverse of each layer and getting z. According to property 1. calculating the log-likelihood is straightforward.
 
 As with everything in life there is no such thing as free lunch, it turns out that by enforcing invertiblitly of network layers and the feasibility of calculating the Jaccobian of each layer $|\frac{\partial f_k^{-1}}{\partial f_{k-1}}|(z_i)$ severely limits the design choices and capaebilites of the model. Therefore, the field was somewhat abandoned until 2024 when [TarFlow](https://arxiv.org/abs/2412.06329) came out, again showing how they are capable generators. Nevertheless, more recent research focused on a different approach on molding simpler distributions into more complicated ones, and one of the most prominent ones are based on flow matching.
 
@@ -34,13 +40,18 @@ The main conceptual leap between older methods such as normalizing flows and flo
 
 Again, lets assume we have two random variables $Z$ and $X$ each sampled according to their respective distributions $Z \sim p_z$ and $X \sim p_x$, and we want to design a map from $p_x$ to $p_z$ (here we slightly deviate from the previous notation, now $z$ will represent the data).
 Instead of *moving* $p_x$ to $p_z$ in one step lets try to do this continuously by moving each $X\sim p_x$ along a path $$\psi_t: [0,1]\times \mathbb{R}^d \longrightarrow \mathbb{R}^d$$ Such that $\psi_0(x) = x \; \forall x \sim p_x$ and $\psi_1(x)\sim p_z$. We call $\psi_t$ a flow or probability path interchangeably. Furthermore, at arbitrary $t$ we get $X_t = \psi_t(X_0)$, which defines a *velocity* filed as
+
 $$\frac{d X_t}{dt} = u_t(X_t)$$
+
 This can be expressed by a *flow* function $\psi$ which satisfies
 
 $$\frac{d\psi_t}{dt} = u_t(\psi_t(x_0))$$
 
-The result is that at each _time_ step $t$ $\psi_t$ defines a new probability density function $p_t(x)$. Furthermore we can relate $u_t$ to $p_t$ using the following continuity equation $$\partial_t p_t(x) + \nabla\cdot \big(p_t(x)u_t(x)\big )=0 $$
+The result is that at each _time_ step $t$ $\psi_t$ defines a new probability density function $p_t(x)$. Furthermore we can relate $u_t$ to $p_t$ using the following continuity equation 
+$$\partial_t p_t(x) + \nabla\cdot \big(p_t(x)u_t(x)\big )=0 $$
+
 What we want the neural network to learn is not $\psi_t$ itself, rather we want it to learn the velocity field $u^{\theta}_t(x)$.  That is we minimize
+
 $$\mathcal{L}_{FM}(\theta) = \mathbb{E}_{x\sim p_t(x)\; t\sim\mathcal{U}}\Big[||u_t(x)  -  u^\theta_t(x)||^2\Big]$$
 
 Once we have that we would sample an $x\sim \mathcal{N}$ use that as the initial condition to integrate:  $$\frac{d X_t}{dt} = u^{\theta}_t(X_t)$$
