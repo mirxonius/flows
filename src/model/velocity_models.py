@@ -2,8 +2,8 @@ from abc import abstractmethod
 import torch.nn as nn
 import torch
 
-from flows.FlowMatching.model.blocks import FCNNBlock
-from flows.FlowMatching.utils import temporal_encoding
+from src.model.blocks import FCNNBlock
+from src.utils import temporal_encoding
 
 
 class SimpleVelocityModel(nn.Module):

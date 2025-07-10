@@ -1,7 +1,7 @@
 import torch.nn as nn
 import torch
 from torch.distributions import Normal
-from flows.FlowMatching.model.velocity_models import SimpleVelocityModel
+from src.model.velocity_models import SimpleVelocityModel
 
 
 class FlowMatchingModel(nn.Module):

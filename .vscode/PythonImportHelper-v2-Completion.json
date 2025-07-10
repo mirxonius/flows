@@ -1,0 +1,248 @@
+[
+    {
+        "label": "torch.nn",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "torch.nn",
+        "description": "torch.nn",
+        "detail": "torch.nn",
+        "documentation": {}
+    },
+    {
+        "label": "torch",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "torch",
+        "description": "torch",
+        "detail": "torch",
+        "documentation": {}
+    },
+    {
+        "label": "Normal",
+        "importPath": "torch.distributions",
+        "description": "torch.distributions",
+        "isExtraImport": true,
+        "detail": "torch.distributions",
+        "documentation": {}
+    },
+    {
+        "label": "Uniform",
+        "importPath": "torch.distributions",
+        "description": "torch.distributions",
+        "isExtraImport": true,
+        "detail": "torch.distributions",
+        "documentation": {}
+    },
+    {
+        "label": "SimpleVelocityModel",
+        "importPath": "src.model.velocity_models",
+        "description": "src.model.velocity_models",
+        "isExtraImport": true,
+        "detail": "src.model.velocity_models",
+        "documentation": {}
+    },
+    {
+        "label": "abstractmethod",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "FCNNBlock",
+        "importPath": "src.model.blocks",
+        "description": "src.model.blocks",
+        "isExtraImport": true,
+        "detail": "src.model.blocks",
+        "documentation": {}
+    },
+    {
+        "label": "temporal_encoding",
+        "importPath": "src.utils",
+        "description": "src.utils",
+        "isExtraImport": true,
+        "detail": "src.utils",
+        "documentation": {}
+    },
+    {
+        "label": "optimal_transport_sampling",
+        "importPath": "src.utils",
+        "description": "src.utils",
+        "isExtraImport": true,
+        "detail": "src.utils",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "zoom",
+        "importPath": "scipy.ndimage",
+        "description": "scipy.ndimage",
+        "isExtraImport": true,
+        "detail": "scipy.ndimage",
+        "documentation": {}
+    },
+    {
+        "label": "matplotlib.pyplot",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "matplotlib.pyplot",
+        "description": "matplotlib.pyplot",
+        "detail": "matplotlib.pyplot",
+        "documentation": {}
+    },
+    {
+        "label": "matplotlib.animation",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "matplotlib.animation",
+        "description": "matplotlib.animation",
+        "detail": "matplotlib.animation",
+        "documentation": {}
+    },
+    {
+        "label": "FlowMatchingModel",
+        "importPath": "src.model.FlowMatchingModel",
+        "description": "src.model.FlowMatchingModel",
+        "isExtraImport": true,
+        "detail": "src.model.FlowMatchingModel",
+        "documentation": {}
+    },
+    {
+        "label": "FlowMatchingModel",
+        "importPath": "src.model.FlowMatchingModel",
+        "description": "src.model.FlowMatchingModel",
+        "isExtraImport": true,
+        "detail": "src.model.FlowMatchingModel",
+        "documentation": {}
+    },
+    {
+        "label": "tqdm",
+        "importPath": "tqdm",
+        "description": "tqdm",
+        "isExtraImport": true,
+        "detail": "tqdm",
+        "documentation": {}
+    },
+    {
+        "label": "Dataset",
+        "importPath": "torch.utils.data",
+        "description": "torch.utils.data",
+        "isExtraImport": true,
+        "detail": "torch.utils.data",
+        "documentation": {}
+    },
+    {
+        "label": "DataLoader",
+        "importPath": "torch.utils.data",
+        "description": "torch.utils.data",
+        "isExtraImport": true,
+        "detail": "torch.utils.data",
+        "documentation": {}
+    },
+    {
+        "label": "emd",
+        "importPath": "ot",
+        "description": "ot",
+        "isExtraImport": true,
+        "detail": "ot",
+        "documentation": {}
+    },
+    {
+        "label": "unif",
+        "importPath": "ot",
+        "description": "ot",
+        "isExtraImport": true,
+        "detail": "ot",
+        "documentation": {}
+    },
+    {
+        "label": "FlowMatchingModel",
+        "kind": 6,
+        "importPath": "src.model.FlowMatchingModel",
+        "description": "src.model.FlowMatchingModel",
+        "peekOfCode": "class FlowMatchingModel(nn.Module):\n    def __init__(self, data_dims: int, hidden_dim: int, num_layers: int, dt=1e-2):\n        super().__init__()\n        self.data_dims = data_dims\n        self.hidden_dim = hidden_dim\n        self.dt = dt\n        self.register_buffer(\"loc\", torch.zeros(data_dims))\n        self.register_buffer(\"scale\", torch.ones(data_dims))\n        self.velocity_model: nn.Module = SimpleVelocityModel(\n            out_dims=data_dims, hidden_dims=[hidden_dim] * num_layers",
+        "detail": "src.model.FlowMatchingModel",
+        "documentation": {}
+    },
+    {
+        "label": "FCNNBlock",
+        "kind": 6,
+        "importPath": "src.model.blocks",
+        "description": "src.model.blocks",
+        "peekOfCode": "class FCNNBlock(nn.Module):\n    def __init__(\n        self,\n        in_dim: int,\n        out_dim: int,\n        normalizaton: bool = True,\n        activation: nn.Module = nn.SiLU(),\n    ):\n        super().__init__()\n        self.activation = activation",
+        "detail": "src.model.blocks",
+        "documentation": {}
+    },
+    {
+        "label": "SimpleVelocityModel",
+        "kind": 6,
+        "importPath": "src.model.velocity_models",
+        "description": "src.model.velocity_models",
+        "peekOfCode": "class SimpleVelocityModel(nn.Module):\n    def __init__(self, out_dims: int, hidden_dims: list[int] = [64, 64, 64, 64]):\n        super().__init__()\n        self.embedding_dim = hidden_dims[0]\n        self.hidden_dims = hidden_dims\n        self.t_projection = FCNNBlock(\n            in_dim=self.embedding_dim,\n            out_dim=self.embedding_dim,\n            activation=nn.Identity(),\n            normalizaton=False,",
+        "detail": "src.model.velocity_models",
+        "documentation": {}
+    },
+    {
+        "label": "create_density_evolution_animation",
+        "kind": 2,
+        "importPath": "src.visualization.animations.density_animation",
+        "description": "src.visualization.animations.density_animation",
+        "peekOfCode": "def create_density_evolution_animation(\n    X, save_path=None, fps=10, zoom_factor=2, title: str = \"Density Evolution\"\n):\n    \"\"\"\n    Enhanced version with smoother interpolation and better controls.\n    Args:\n        X: Array of data samples for each time step\n        save_path: Optional path to save the animation\n        fps: Frames per second\n        zoom_factor: Upsampling factor for smoother visualization",
+        "detail": "src.visualization.animations.density_animation",
+        "documentation": {}
+    },
+    {
+        "label": "animate_flow_velocity_field",
+        "kind": 2,
+        "importPath": "src.visualization.animations.flow_velocity_animation",
+        "description": "src.visualization.animations.flow_velocity_animation",
+        "peekOfCode": "def animate_flow_velocity_field(\n    flow_model: FlowMatchingModel,\n    x_range=(-3, 3),\n    y_range=(-3, 3),\n    grid_density=20,\n    arrow_scale=1.0,\n    frames=110,\n    interval=110,\n    figsize=(10, 8),\n    dt: float = 1e-2,",
+        "detail": "src.visualization.animations.flow_velocity_animation",
+        "documentation": {}
+    },
+    {
+        "label": "create_generation_trajectory_animation",
+        "kind": 2,
+        "importPath": "src.visualization.animations.sample_path_animation",
+        "description": "src.visualization.animations.sample_path_animation",
+        "peekOfCode": "def create_generation_trajectory_animation(\n    X,\n    save_path=None,\n    fps=10,\n    title: str = \"Data Trajectory\",\n    trace_paths=False,\n    trace_alpha=0.3,\n):\n    \"\"\"\n    Enhanced version with smoother interpolation, better controls, and optional path tracing.",
+        "detail": "src.visualization.animations.sample_path_animation",
+        "documentation": {}
+    },
+    {
+        "label": "train_flow_model",
+        "kind": 2,
+        "importPath": "src.train_flow",
+        "description": "src.train_flow",
+        "peekOfCode": "def train_flow_model(\n    model: FlowMatchingModel,\n    dataloader: DataLoader,\n    loss_fn: nn.Module,\n    num_epochs: int = 300,\n    lr: float = 1e-3,\n    device: str = \"cpu\",\n    optimal_transport: bool = True,\n) -> FlowMatchingModel:\n    model = model.to(device)",
+        "detail": "src.train_flow",
+        "documentation": {}
+    },
+    {
+        "label": "temporal_encoding",
+        "kind": 2,
+        "importPath": "src.utils",
+        "description": "src.utils",
+        "peekOfCode": "def temporal_encoding(\n    t: torch.Tensor, channels_t: int, inv_freq: float = 10000.0\n) -> torch.Tensor:\n    freq = 2 * torch.arange(channels_t, device=t.device) * torch.pi\n    embd = freq * t / inv_freq\n    embd = torch.cat(\n        [embd[:, slice(0, channels_t, 2)].sin(), embd[:, slice(1, channels_t, 2)]],\n        dim=-1,\n    )\n    return embd",
+        "detail": "src.utils",
+        "documentation": {}
+    },
+    {
+        "label": "optimal_transport_sampling",
+        "kind": 2,
+        "importPath": "src.utils",
+        "description": "src.utils",
+        "peekOfCode": "def optimal_transport_sampling(\n    x0: torch.Tensor, x1: torch.Tensor\n) -> tuple[torch.Tensor]:\n    with torch.no_grad():\n        batch = x0.shape[0]\n        M = torch.cdist(x0.view(batch, -1), x1.view(batch, -1)).cpu().numpy()\n        x0_bins = unif(batch)\n        x1_bins = unif(batch)\n        transport_matrix = emd(x0_bins, x1_bins, M)\n        source, destinaton = np.where(transport_matrix > 0)",
+        "detail": "src.utils",
+        "documentation": {}
+    }
+]

@@ -4,8 +4,8 @@ from torch.utils.data import Dataset, DataLoader
 import torch.nn as nn
 from torch.distributions import Uniform
 
-from flows.FlowMatching.model.FlowMatchingModel import FlowMatchingModel
-from flows.FlowMatching.utils import optimal_transport_sampling
+from src.model.FlowMatchingModel import FlowMatchingModel
+from src.utils import optimal_transport_sampling
 
 
 def train_flow_model(

@@ -2,7 +2,7 @@ import numpy as np
 import torch
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-from flows.FlowMatching.model.FlowMatchingModel import FlowMatchingModel
+from src.model.FlowMatchingModel import FlowMatchingModel
 
 
 @torch.no_grad()
