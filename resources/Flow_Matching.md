@@ -19,14 +19,14 @@ $$\mathbb{P}[x \in V] = \int_V p_x(x) dx = \int_{\phi^{-1}(z)} p_x(\phi(z))\math
 
 The issue now becomes that we do not know what $\phi$ should look like, so why don't we learn it? This is exactly what we will do, however we need to make sure that $\phi_\theta$ (note that $\phi$ is assigned some learnable parameters $\theta$) stays invertible. As any mathematician worth their salt know that a composition of invertible functions is also invertible so if we decide on making $\phi_\theta$ a neural network we only need to ensure that each layer is invertible! See more on how to do that [here](https://arxiv.org/pdf/1908.09257) , but the curx is that our model has the following form:
 
-$$ \phi_{\theta} = f_k \circ f_{k-1}\circ ... \circ f_{2} \circ f_{1}$$
+$$\phi_{\theta} = f_k \circ f_{k-1}\circ ... \circ f_{2} \circ f_{1}$$
 
 Where $f_i$ is the $i$-th layer of a neural network.
 
 It turns out this gives as plenty of nice properties:
 1. The loss function is a simple *negative log-likelyhood*
 
-$$ \mathcal{l}_{\theta,i} =  p_{x_i} \log p_{x_i}  =  \log p_z(z_i) + \sum_k  \log |\frac{\partial f_k^{-1}}{\partial f_{k-1}}|(z_i)$$
+$$\mathcal{l}_{\theta,i} =  p_{x_i} \log p_{x_i}  =  \log p_z(z_i) + \sum_k  \log |\frac{\partial f_k^{-1}}{\partial f_{k-1}}|(z_i)$$
 
 Where $f_0 = z$. 
 3. We can use the network to sample $x$ by first sampling $z$ and passing it through the network.
