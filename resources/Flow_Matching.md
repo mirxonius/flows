@@ -36,7 +36,9 @@ Again, lets assume we have two random variables $Z$ and $X$ each sampled accordi
 Instead of *moving* $p_x$ to $p_z$ in one step lets try to do this continuously by moving each $X\sim p_x$ along a path $$\psi_t: [0,1]\times \mathbb{R}^d \longrightarrow \mathbb{R}^d$$ Such that $\psi_0(x) = x \; \forall x \sim p_x$ and $\psi_1(x)\sim p_z$. We call $\psi_t$ a flow or probability path interchangeably. Furthermore, at arbitrary $t$ we get $X_t = \psi_t(X_0)$, which defines a *velocity* filed as
 $$\frac{d X_t}{dt} = u_t(X_t)$$
 This can be expressed by a *flow* function $\psi$ which satisfies
+
 $$\frac{d\psi_t}{dt} = u_t(\psi_t(x_0))$$
+
 The result is that at each _time_ step $t$ $\psi_t$ defines a new probability density function $p_t(x)$. Furthermore we can relate $u_t$ to $p_t$ using the following continuity equation $$\partial_t p_t(x) + \nabla\cdot \big(p_t(x)u_t(x)\big )=0 $$
 What we want the neural network to learn is not $\psi_t$ itself, rather we want it to learn the velocity field $u^{\theta}_t(x)$.  That is we minimize
 $$\mathcal{L}_{FM}(\theta) = \mathbb{E}_{x\sim p_t(x)\; t\sim\mathcal{U}}\Big[||u_t(x)  -  u^\theta_t(x)||^2\Big]$$
