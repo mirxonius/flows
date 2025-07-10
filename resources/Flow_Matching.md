@@ -39,7 +39,11 @@ As with everything in life there is no such thing as free lunch, it turns out th
 The main conceptual leap between older methods such as normalizing flows and flow matching is that while normalizing flow try to train a neural network to directly model the distribution molding in one step, flow matching trains the neural network to do that in many steps. 
 
 Again, lets assume we have two random variables $Z$ and $X$ each sampled according to their respective distributions $Z \sim p_z$ and $X \sim p_x$, and we want to design a map from $p_x$ to $p_z$ (here we slightly deviate from the previous notation, now $z$ will represent the data).
-Instead of *moving* $p_x$ to $p_z$ in one step lets try to do this continuously by moving each $X\sim p_x$ along a path $$\psi_t: [0,1]\times \mathbb{R}^d \longrightarrow \mathbb{R}^d$$ Such that $\psi_0(x) = x \; \forall x \sim p_x$ and $\psi_1(x)\sim p_z$. We call $\psi_t$ a flow or probability path interchangeably. Furthermore, at arbitrary $t$ we get $X_t = \psi_t(X_0)$, which defines a *velocity* filed as
+Instead of *moving* $p_x$ to $p_z$ in one step lets try to do this continuously by moving each $X\sim p_x$ along a path 
+
+$$\psi_t: [0,1]\times \mathbb{R}^d \longrightarrow \mathbb{R}^d$$ 
+
+Such that $\psi_0(x) = x \; \forall x \sim p_x$ and $\psi_1(x)\sim p_z$. We call $\psi_t$ a flow or probability path interchangeably. Furthermore, at arbitrary $t$ we get $X_t = \psi_t(X_0)$, which defines a *velocity* filed as
 
 $$\frac{d X_t}{dt} = u_t(X_t)$$
 
@@ -130,13 +134,13 @@ have the same gradients, and therefore the same local minima w.r.t the  model pa
 **Proof:** 
 The Flow Matching loss decomposes into three terms, where only two of them depend on  $\theta$, and the remaining is a constant w.r.t $\theta$  
 
-$$\mathcal{L}_{FM}(\theta) = \mathbb{E}_{x\sim p_t(x|z) \, z\sim p_z \,t\sim\mathcal{U}}\Big[||u_t(x)  -  u^\theta_t(x)||^2\Big] = \mathbb{E}\Big[u^\theta_t(x)^2 - 2 u_t(x) \cdot u_t^\theta(x) + u_t(x)^2 \Big]  =$$
+$$\mathcal{L}_{FM}(\theta) = \mathbb{E}_{x\sim p_t(x|z) \, z\sim p_z \,t\sim\mathcal{U}}\Big[||u_t(x)  -  u^\theta_t(x)||^2\Big] = \mathbb{E}\Big[u^\theta_t(x)^2 - 2 u_t(x) \cdot u_t^\theta(x) + u_t(x)^2 \Big] =$$
 
 $$= \mathbb{E}\Big[ u^\theta_t(x)^2 \Big] - 2\mathbb{E}\Big[ u_t(x) \cdot u_t^\theta(x) \Big] + C_1 \qquad (3)$$
 
 Lets have a closer look at the second term
 
-$$\mathbb{E}_{}\Big[ u_t(x) \cdot u_t^\theta(x) \Big] = \int dt \int dx \, p_t(x) u^\theta_t(x) \cdot u_t(x) =^{(\ast)} \int dt \int dx \int p_t(x) u_t^{\theta}(x) \cdot \int u_t(x|z) \frac{p_t(x|z)p(z)}{p_t(x)} dz$$
+$$\mathbb{E}\Big[ u_t(x) \cdot u_t^\theta(x) \Big] = \int dt \int dx \, p_t(x) u^\theta_t(x) \cdot u_t(x) =^{(\ast)} \int dt \int dx \int p_t(x) u_t^{\theta}(x) \cdot \int u_t(x|z) \frac{p_t(x|z)p(z)}{p_t(x)} dz$$
 
 $$= \int dt \int dx \int dz \; u_t^\theta(x) \cdot u_t(x|z) p(x|z)p(z) = \mathbb{E}_{x\sim p(x|z)\, z\sim p_z\, t\sim \mathcal{U}}\Big[u^\theta_t(x)\cdot u_t(x|z) \Big] \quad (4)$$
 
