@@ -26,7 +26,7 @@ Where $f_i$ is the $i$-th layer of a neural network.
 It turns out this gives as plenty of nice properties:
 1. The loss function is a simple *negative log-likelyhood*
 
-$$\mathcal{l}_{\theta,i} =  p_{x_i} \log p_{x_i}  =  \log p_z(z_i) + \sum_k  \log |\frac{\partial f_k^{-1}}{\partial f_{k-1}}|(z_i)$$
+$$\mathcal{l}_{\theta,i} = p_{x_i} \log p_{x_i} = \log p_z(z_i) + \sum_k \log |\frac{\partial f_k^{-1}}{\partial f_{k-1}}|(z_i)$$
 
 Where $f_0 = z$. 
 3. We can use the network to sample $x$ by first sampling $z$ and passing it through the network.
@@ -48,6 +48,7 @@ This can be expressed by a *flow* function $\psi$ which satisfies
 $$\frac{d\psi_t}{dt} = u_t(\psi_t(x_0))$$
 
 The result is that at each _time_ step $t$ $\psi_t$ defines a new probability density function $p_t(x)$. Furthermore we can relate $u_t$ to $p_t$ using the following continuity equation 
+
 $$\partial_t p_t(x) + \nabla\cdot \big(p_t(x)u_t(x)\big )=0 $$
 
 What we want the neural network to learn is not $\psi_t$ itself, rather we want it to learn the velocity field $u^{\theta}_t(x)$.  That is we minimize
@@ -64,11 +65,17 @@ Aside from the problem that we do not know what $u_t(x)$ is we also do not know 
 
 For the time being lets try to solve a much simpler problem, where we have only one example in our dataset $z_0 \in \mathcal{D}$. If that were the case we know the distribution $p_z= \delta(z-z_0)$, and we know that we have to map each $x\sim p_x$ to the same $z_0$.
 
-Even in this simplest of cases we are met with a choice; there are infinite probability paths $\psi_t$ and $u_t$ that would map from $p_0$ to $p_{data}$. As usual we might try to make use of Gaussian distributions in the following way $$p_t(x) = \mathcal{N}(\alpha_tz_0,\beta_t^2)$$
+Even in this simplest of cases we are met with a choice; there are infinite probability paths $\psi_t$ and $u_t$ that would map from $p_0$ to $p_{data}$. As usual we might try to make use of Gaussian distributions in the following way 
+$$p_t(x) = \mathcal{N}(\alpha_tz_0,\beta_t^2)$$
+
 Where $\alpha_t$ is a monotonically increasing function with $\alpha_0=0$ and $\alpha_1 = 1$, and $\beta_t$ a monotonically decreasing function with $\beta_0=1$ and $\beta_1=0$. This makes sense because at $t=0$ we end up with $p_{x_0} = \mathcal{N}(0,1)$ and with $p_{x_1} = \delta(z-z_0)$. We call this the Gaussian probability path. Furthermore typical choices for are $\alpha_t = t$ and $\beta = 1-t$ .
 
-This now fully defines $x_t(x)$ as $$x_t =\psi_t(x_0)=  \alpha_t z_0 + \beta x_0\;\; x_0\sim\mathcal{N}$$
-After a short derivation we end up with $$u_t(x_0) = \Big(\dot{\alpha_t} - \frac{\dot{\beta_t}}{\beta_t}\alpha_t \Big)z_0 + \frac{\dot{\beta_t}}{\beta_t}x_0$$
+This now fully defines $x_t(x)$ as 
+$$x_t =\psi_t(x_0)=  \alpha_t z_0 + \beta x_0\;\; x_0\sim\mathcal{N}$$
+
+After a short derivation we end up with 
+$$u_t(x_0) = \Big(\dot{\alpha_t} - \frac{\dot{\beta_t}}{\beta_t}\alpha_t \Big)z_0 + \frac{\dot{\beta_t}}{\beta_t}x_0$$
+
 Plugging in our choices of $\alpha_t = t$ and $\beta = 1-t$  we get an incredibly simple expression for our target flow velocity $$u_t(x_0) = z_0 - x_0 $$
 But why would we even care for such a result? It is obvious that there is no use in doing this if we have only a single data point in our dataset, so why do it?
 The utility of this expression stems from the fact that we don't know the distribution of data $p_z$, rather we can only sample some batch $\{z_i\}$ from the dataset, and in that scenario a more formal view reveals several important details to our approach:
@@ -77,7 +84,10 @@ The utility of this expression stems from the fact that we don't know the distri
 3. Step **2.** is especially important since we've done a nice derivation for the case $p(z|z_0) = \delta(z-z_0)$, but more importantly by averaging over the dataset we can obtain the exact distribution $$p(z) = \int p(z_i) \delta(z-z_i) dz_i$$
 Recall the continuity equation
 
-Now that we've established the slight difference between the actual flow velocity $u_t(x)$ and the conditional flow velocity $u_t(x|z)$ our loss function changes to $$\mathcal{L}(\theta)_{CFM} = \mathbb{E}_{z\sim p_{data}\; x\sim p_x\;t\sim\mathcal{U}}\big[ ||u_t(x|z) - u^{\theta}_t(x)||^2 \big]$$
+Now that we've established the slight difference between the actual flow velocity $u_t(x)$ and the conditional flow velocity $u_t(x|z)$ our loss function changes to 
+
+$$\mathcal{L}(\theta)_{CFM} = \mathbb{E}_{z\sim p_{data}\; x\sim p_x\;t\sim\mathcal{U}}\big[ ||u_t(x|z) - u^{\theta}_t(x)||^2 \big]$$
+
 But wait! We are no longer fitting the model to the real $u_t(x)$, rather to the conditional $u_t(x|z)$, will this be good enough to fit to the model data?
 
 In the next section we will discuss, a remarkable result why it is.
@@ -87,34 +97,57 @@ In the next section we will discuss, a remarkable result why it is.
 
 In the previous section we have only stated that there exists such a thing called the *conditional flow velocity* and that it is the thing we are regressing for, but how does it relate to the probability path and the real flow velocity?
 
-Recall the probability continuity equation $$\partial_t p_t(x) = - \nabla\cdot \big(p_t(x)u_t(x)\big)\quad (1)$$It should hold for any probability distribution, and so it should also hold for a conditional distribution
+Recall the probability continuity equation 
+
+$$\partial_t p_t(x) = - \nabla\cdot \big(p_t(x)u_t(x)\big)\quad (1)$$
+
+It should hold for any probability distribution, and so it should also hold for a conditional distribution
  
 $$\partial_t p_t(x|z) = - \nabla\cdot \big(p_t(x|z)u_t(x|z)\big ) \quad (2)$$
+
 This is where the conditional flow velocity $u_t(x|z)$ naturally occurs.
-As you might know, we can always marginalize a distribution according to w.r.t random variable $$p(x) = \int p(x|z)p(z)dz$$
-So lets perform the marginalization of equation $(1)$ $$\partial_t p_t(x)=\partial_t \int p_t(x|z)p(z)dz =  \int \partial_t p_t(x|z)p(z)dz = - \int \nabla\cdot \big(p_t(x|z)u_t(x|z)\big  )p(z)dz =$$
+As you might know, we can always marginalize a distribution according to w.r.t random variable 
+$$p(x) = \int p(x|z)p(z)dz$$
+
+So lets perform the marginalization of equation $(1)$ 
+
+$$\partial_t p_t(x)=\partial_t \int p_t(x|z)p(z)dz =  \int \partial_t p_t(x|z)p(z)dz = - \int \nabla\cdot \big(p_t(x|z)u_t(x|z)\big  )p(z)dz =$$
+
 $$=-\nabla \cdot  p_t(x) \int u_t(x|z) \frac{p_t(x|z)p(z)}{p_t(x)} dz = \partial_tp_t(x)$$
+
 $$ \implies u_t(x) = \int u_t(x|z) \frac{p_t(x|z)p(z)}{p_t(x)} dz \qquad (\ast)$$
+
 The result $(\ast)$ finally relates the real flow velocity to the conditional flow velocity, and this result will be important to prove the following statement.
 
 **Theorem 1:** The original loss function 
+
 $$\mathcal{L}_{FM}(\theta) = \mathbb{E}_{x\sim p_x\; t\sim\mathcal{U}}\Big[||u_t(x)  -  u^\theta_t(x)||^2\Big]$$ and the conditional loss function 
-$$\mathcal{L}(\theta)_{CFM} = \mathbb{E}_{z\sim p_{data}\; x\sim p_x\;t\sim\mathcal{U}}\big[ ||u_t(x|z) - u^{\theta}_t(x)||^2 \big]$$ have the same gradients, and therefore the same local minima w.r.t the  model parameters $\theta$.
+
+$$\mathcal{L}(\theta)_{CFM} = \mathbb{E}_{z\sim p_{data}\; x\sim p_x\;t\sim\mathcal{U}}\big[ ||u_t(x|z) - u^{\theta}_t(x)||^2 \big]$$
+
+have the same gradients, and therefore the same local minima w.r.t the  model parameters $\theta$.
 
 **Proof:** 
 The Flow Matching loss decomposes into three terms, where only two of them depend on  $\theta$, and the remaining is a constant w.r.t $\theta$  
+
 $$\mathcal{L}_{FM}(\theta) = \mathbb{E}_{x\sim p_t(x|z) \, z\sim p_z \,t\sim\mathcal{U}}\Big[||u_t(x)  -  u^\theta_t(x)||^2\Big] = \mathbb{E}\Big[u^\theta_t(x)^2 - 2 u_t(x) \cdot u_t^\theta(x) + u_t(x)^2 \Big]  =$$
+
 $$= \mathbb{E}\Big[ u^\theta_t(x)^2 \Big] - 2\mathbb{E}\Big[ u_t(x) \cdot u_t^\theta(x) \Big] + C_1 \qquad (3)$$
+
 Lets have a closer look at the second term
-$$
-\mathbb{E}_{}\Big[ u_t(x) \cdot u_t^\theta(x) \Big] = \int dt \int dx \, p_t(x) u^\theta_t(x) \cdot u_t(x) =^{(\ast)} \int dt \int dx \int p_t(x) u_t^{\theta}(x) \cdot \int u_t(x|z) \frac{p_t(x|z)p(z)}{p_t(x)} dz
-$$
+
+$$\mathbb{E}_{}\Big[ u_t(x) \cdot u_t^\theta(x) \Big] = \int dt \int dx \, p_t(x) u^\theta_t(x) \cdot u_t(x) =^{(\ast)} \int dt \int dx \int p_t(x) u_t^{\theta}(x) \cdot \int u_t(x|z) \frac{p_t(x|z)p(z)}{p_t(x)} dz$$
+
 $$= \int dt \int dx \int dz \; u_t^\theta(x) \cdot u_t(x|z) p(x|z)p(z) = \mathbb{E}_{x\sim p(x|z)\, z\sim p_z\, t\sim \mathcal{U}}\Big[u^\theta_t(x)\cdot u_t(x|z) \Big] \quad (4)$$
+
 We can substitute result $(4)$ into equation $(3)$, and add and subtract $\mathbb{E}_{x\sim p_t(x|z)\,z\sim p_z\,t\sim \mathcal{U}}\Big[ u_t(x|z)^2\Big]$, (which is a constant w.r.t. $\theta$) to get
 
 $$\mathcal{L}_{FM}(\theta) = \mathbb{E}\Big[ u^\theta_t(x)^2 \Big] - 2\mathbb{E}\Big[ u_t(x|z) \cdot u_t^\theta(x) \Big] + \mathbb{E}\Big[ u_t(x|z)^2\Big] -\mathbb{E}\Big[ u_t(x|z)^2\Big] + C_1=$$
+
 $$= \mathcal{L}_{CFM} + C_1 + C_2$$
+
 where $C_2 = \mathbb{E}_{x\sim p_t(x|z)\,z\sim p_z\,t\sim \mathcal{U}}\Big[ u_t(x|z)^2\Big]$. 
+
 The next equation trivially follows $$\nabla_{\theta} \mathcal{L}_{FM} = \nabla_{\theta} \mathcal{L}_{CFM}$$
 **Q.E.D.**
 
