@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+import torch.nn as nn
 from ot import emd, unif
 
 
@@ -27,3 +28,23 @@ def optimal_transport_sampling(
         transport_matrix = emd(x0_bins, x1_bins, M)
         source, destinaton = np.where(transport_matrix > 0)
     return source, destinaton
+
+
+def model_size_b(model: nn.Module) -> int:
+    """
+    Returns model size in bytes.
+
+    Based on https://discuss.pytorch.org/t/finding-model-size/130275/2
+
+    Args:
+        model: PyTorch model
+
+    Returns:
+        Model size in bytes
+    """
+    size = 0
+    for param in model.parameters():
+        size += param.nelement() * param.element_size()
+    for buf in model.buffers():
+        size += buf.nelement() * buf.element_size()
+    return size
