@@ -7,7 +7,7 @@ Flow Matching implementation and visualizations
 
 #### Regular Probability Distribution Path
 
-![Regular Probability Distribution Path](resources/density_evolution.gif)
+![Regular Probability Distribution Path](../resources/density_evolution.gif)
 
 
 #### Optimal Transport Probability Distribution Path
