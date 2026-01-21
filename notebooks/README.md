@@ -1,5 +1,5 @@
 # flows
-Flow Matching implementation and visualizations
+Flow Matching on Two Moons dataset results and visualzations. Comparsions between simple flow matching and optimal transport flow matching.
 
 ## Visualizations
 
