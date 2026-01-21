@@ -6,7 +6,7 @@ A comprehensive PyTorch implementation of **Flow Matching** for generative model
 
 Flow Matching is a simulation-free approach for training continuous normalizing flows (CNFs) that learns to transform samples from a simple noise distribution to a complex target distribution. This implementation provides:
 
-- **Simple Flow Matching**: MLP-based models for 1D/tabular data
+- **Simple Flow Matching**: MLP-based models for simple N-dimensional data data
 - **DiT Flow Matching**: Vision Transformer architecture for conditional image generation
 - **Optimal Transport**: Optional OT-based coupling for improved training
 - **Classifier-Free Guidance**: Advanced conditional generation with controllable guidance
@@ -17,7 +17,7 @@ Flow Matching is a simulation-free approach for training continuous normalizing 
 ### 🎯 Two Model Types
 
 **1. Simple Flow Matching (`FlowMatchingModel`)**
-- MLP-based velocity model for 1D/flat data
+- MLP-based velocity model for 1D and ND flat data
 - Perfect for learning simple distributions
 - Fast training and inference
 
