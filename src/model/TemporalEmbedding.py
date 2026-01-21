@@ -1,7 +1,7 @@
 import math
 import torch.nn as nn
 import torch
-from flows.FlowMatching.model.layers import Mlp
+from src.model.layers import Mlp
 
 
 class TemporalEmbedding(nn.Module):
@@ -22,10 +22,13 @@ class TemporalEmbedding(nn.Module):
         """
         Create sinusoidal timestep embeddings.
 
-        :param t: a 1-D torch.Tensor of N indices, one per batch element. These may be fractional.
-        :param dim: the dimension of the output.
-        :param max_period: controls the minimum frequency of the embeddings.
-        :return: an (N, D) torch.Tensor of positional embeddings.
+        Args:
+            t: a 1-D torch.Tensor of N indices, one per batch element. These may be fractional.
+            dim: the dimension of the output.
+            max_period: controls the minimum frequency of the embeddings.
+
+        Returns:
+            an (N, D) torch.Tensor of positional embeddings.
         """
         half: int = dim // 2
         freqs: torch.Tensor = torch.exp(

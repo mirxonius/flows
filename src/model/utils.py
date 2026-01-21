@@ -3,7 +3,17 @@ import numpy as np
 
 
 def modulate(x: torch.Tensor, shift: torch.Tensor, scale: torch.Tensor) -> torch.Tensor:
-    # todo: Add shape annotations
+    """
+    Modulate input tensor with shift and scale parameters.
+
+    Args:
+        x: Input tensor
+        shift: Shift parameter
+        scale: Scale parameter
+
+    Returns:
+        Modulated tensor
+    """
     return x * (1 + scale.unsqueeze(1)) + shift.unsqueeze(1)
 
 
@@ -11,11 +21,16 @@ def get_2d_sincos_pos_embed(
     embed_dim: int, grid_size: int, cls_token: bool = False, extra_tokens: int = 0
 ) -> np.ndarray:
     """
-    :param embed_dim: Dimension of the positional embedding
-    :param grid_size: Height and width of the grid
-    :param cls_token: Whether to prepend extra tokens (e.g., [CLS])
-    :param extra_tokens: Number of extra tokens to prepend
-    :return: Positional embedding of shape [(extra_tokens + grid_size^2), embed_dim]
+    Generate 2D sinusoidal positional embeddings.
+
+    Args:
+        embed_dim: Dimension of the positional embedding
+        grid_size: Height and width of the grid
+        cls_token: Whether to prepend extra tokens (e.g., [CLS])
+        extra_tokens: Number of extra tokens to prepend
+
+    Returns:
+        Positional embedding of shape [(extra_tokens + grid_size^2), embed_dim]
     """
     grid_h = np.arange(grid_size, dtype=np.float32)
     grid_w = np.arange(grid_size, dtype=np.float32)
@@ -35,9 +50,14 @@ def get_2d_sincos_pos_embed(
 
 def get_2d_sincos_pos_embed_from_grid(embed_dim: int, grid: np.ndarray) -> np.ndarray:
     """
-    :param embed_dim: Total embedding dimension (must be even)
-    :param grid: Array of shape (2, 1, grid_size, grid_size)
-    :return: Positional embedding of shape [grid_size^2, embed_dim]
+    Generate 2D sinusoidal positional embeddings from a grid.
+
+    Args:
+        embed_dim: Total embedding dimension (must be even)
+        grid: Array of shape (2, 1, grid_size, grid_size)
+
+    Returns:
+        Positional embedding of shape [grid_size^2, embed_dim]
     """
     assert embed_dim % 2 == 0, "Embedding dimension must be even"
     emb_h = get_1d_sincos_pos_embed_from_grid(embed_dim // 2, grid[0])
@@ -47,9 +67,14 @@ def get_2d_sincos_pos_embed_from_grid(embed_dim: int, grid: np.ndarray) -> np.nd
 
 def get_1d_sincos_pos_embed_from_grid(embed_dim: int, pos: np.ndarray) -> np.ndarray:
     """
-    :param embed_dim: Output embedding dimension for each position (must be even)
-    :param pos: 1D array of positions to be encoded, shape (M,)
-    :return: Positional encoding of shape (M, embed_dim)
+    Generate 1D sinusoidal positional embeddings from positions.
+
+    Args:
+        embed_dim: Output embedding dimension for each position (must be even)
+        pos: 1D array of positions to be encoded, shape (M,)
+
+    Returns:
+        Positional encoding of shape (M, embed_dim)
     """
     assert embed_dim % 2 == 0, "Embedding dimension must be even"
 

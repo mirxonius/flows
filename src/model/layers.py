@@ -5,10 +5,12 @@ import math
 from einops import rearrange
 from einops.layers.torch import Rearrange
 
-from flows.FlowMatching.model.utils import modulate
+from src.model.utils import modulate
 
 
 class Mlp(nn.Sequential):
+    """Multi-layer perceptron with SiLU activation."""
+
     def __init__(
         self,
         in_features: int,
@@ -26,6 +28,10 @@ class Mlp(nn.Sequential):
 
 
 class PatchEmbed(nn.Module):
+    """
+    Embeds images into patches using a convolutional layer.
+    """
+
     def __init__(
         self,
         input_size: Tuple[int, int],
@@ -73,6 +79,8 @@ class PatchEmbed(nn.Module):
 
 
 class Unpatchify(Rearrange):
+    """Converts patch tokens back to image format."""
+
     def __init__(
         self,
         horizontal_patches: int,

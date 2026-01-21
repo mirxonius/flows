@@ -4,7 +4,8 @@ import torch.nn as nn
 
 class LabelEmbedder(nn.Module):
     """
-    Embeds class labels into vector representations. Also handles label dropout for classifier-free guidance.
+    Embeds class labels into vector representations.
+    Also handles label dropout for classifier-free guidance.
     """
 
     def __init__(self, num_classes: int, model_dim: int, dropout_prob: float) -> None:
@@ -18,8 +19,11 @@ class LabelEmbedder(nn.Module):
         """
         Drops labels to enable classifier-free guidance.
 
-        :param labels: torch.Tensor of shape (B,) containing class indices.
-        :return: torch.Tensor of shape (B,) with some labels possibly replaced with cfg token.
+        Args:
+            labels: torch.Tensor of shape (B,) containing class indices.
+
+        Returns:
+            torch.Tensor of shape (B,) with some labels possibly replaced with cfg token.
         """
         batch_size, *_ = labels.shape
         drop_ids = torch.rand(batch_size, device=labels.device) < self.dropout_prob
@@ -29,9 +33,12 @@ class LabelEmbedder(nn.Module):
 
     def forward(self, labels: torch.Tensor, should_drop: bool) -> torch.Tensor:
         """
-        :param labels: torch.Tensor of shape (B,) containing class indices.
-        :param should_drop: Whether to apply label dropout (usually True during training).
-        :return: torch.Tensor of shape (B, model_dim) containing label embeddings.
+        Args:
+            labels: torch.Tensor of shape (B,) containing class indices.
+            should_drop: Whether to apply label dropout (usually True during training).
+
+        Returns:
+            torch.Tensor of shape (B, model_dim) containing label embeddings.
         """
         use_dropout: bool = self.dropout_prob > 0
         if use_dropout and should_drop:
