@@ -50,7 +50,7 @@ pip install torch torchvision tqdm matplotlib numpy einops POT
 
 ## Quick Start
 
-### Simple Flow Matching (1D Data)
+### Simple Flow Matching (2D Data)
 
 ```python
 from src.model import FlowMatchingModel
