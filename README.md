@@ -212,25 +212,7 @@ Starting from noise `x(0) ~ N(0, I)`, we can integrate this ODE to obtain sample
 
 For detailed mathematical derivations, see [resources/Flow_Matching.md](resources/Flow_Matching.md).
 
-## Advanced Usage
 
-### Custom Velocity Models
-
-```python
-import torch.nn as nn
-
-class CustomVelocityModel(nn.Module):
-    def __init__(self, ...):
-        super().__init__()
-        # Your architecture here
-
-    def forward(self, t, x, guidance=None, apply_class_dropout=False):
-        # t: (batch_size,) time
-        # x: (batch_size, *data_shape) current state
-        # guidance: (batch_size,) labels (optional)
-        # Returns: velocity of same shape as x
-        ...
-```
 
 ### Different Integration Methods
 
