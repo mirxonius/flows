@@ -137,7 +137,7 @@ samples = trained_model.sample(
 
 Our DiT Flow Matching model trained on MNIST with classifier-free guidance (scale=3.0):
 
-![MNIST Results](resources/mnist_epoch200_guidance3.png)
+![MNIST Results](resources/MNIST_results.png)
 
 *Conditionally generated MNIST digits (0-9) showing high quality and diversity. The model successfully learns to generate each digit class with clear, recognizable features.*
 
@@ -186,7 +186,7 @@ flows/
 
 ## Visualizations
 
-For detailed visualizations of probability density evolution, flow velocity fields, and sample trajectories, see [notebooks/VISUALIZATIONS.md](notebooks/VISUALIZATIONS.md).
+For detailed visualizations of probability density evolution, flow velocity fields, and sample trajectories, see [twoo_moon_results/README.md](twoo_moon_results/README.md).
 
 Key visualizations include:
 - **Probability Distribution Paths**: How distributions evolve over time
