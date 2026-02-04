@@ -2,6 +2,9 @@
 
 A comprehensive PyTorch implementation of **Flow Matching** for generative modeling, featuring both simple MLP-based models and advanced Diffusion Transformer (DiT) architectures for conditional image generation.
 
+
+You can find an extended blog assoicated with this repository [here](https://mirxonius.github.io/2026-02-02-flow-matching-notes/).
+
 ## Overview
 
 Flow Matching is a simulation-free approach for training continuous normalizing flows (CNFs) that learns to transform samples from a simple noise distribution to a complex target distribution. This implementation provides:
